@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <vector>
 #include <elements.hpp>
 
@@ -31,6 +32,19 @@ auto render(view& view_)
       "1", "2", "3", ".",
       "0", "="
    };
+   
+   auto AC = button("AC");
+   AC.on_click = [&view_, in, input = in.second.get()](bool) mutable {
+         input->set_text("0");
+         view_.refresh(*in.second);
+      };
+   
+   auto DEL = button("DEL");
+   DEL.on_click = [&view_, in, input = in.second.get()](bool) mutable {
+         std::string temp = input->get_text();
+         input->set_text(temp.substr(0, temp.size()-1));
+         view_.refresh(*in.second);
+      };
 
    for (int i = 0; i < icons.size(); i++) {
       buttons.push_back(button(icons[i]));
