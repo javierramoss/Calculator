@@ -24,11 +24,12 @@ auto render(view& view_)
 
    std::vector<layered_button> buttons;
    std::vector<std::string> icons = {
-      "AC", "DEL", "^", "s",
-      "7", "8", "9", "x",
-      "4", "5", "6", "/",
-      "1", "2", "3", "+",
-      "0", ".", "=", "-"
+      "AC", "DEL", "(", ")",
+      "^", "s", "x", "/"
+      "7", "8", "9", "+",
+      "4", "5", "6", "-",
+      "1", "2", "3", ".",
+      "0", "="
    };
 
    for (int i = 0; i < icons.size(); i++) {
@@ -45,7 +46,8 @@ auto render(view& view_)
          hgrid(buttons[4], buttons[5], buttons[6], buttons[7]),
          hgrid(buttons[8], buttons[9], buttons[10], buttons[11]),
          hgrid(buttons[12], buttons[13], buttons[14], buttons[15]),
-         hgrid(buttons[16], buttons[17], buttons[18], buttons[19])
+         hgrid(buttons[16], buttons[17], buttons[18], buttons[19]),
+         hgrid(buttons[20], buttons[21]),
       );
 
    return
