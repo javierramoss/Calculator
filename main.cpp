@@ -2,19 +2,21 @@
 #include <string>
 #include <vector>
 #include <elements.hpp>
+#include "calculator.hpp"
 
 using namespace cycfi::elements;
 
 auto constexpr bkd_color = rgba(35, 35, 37, 255);
 auto background = box(bkd_color);
 
-auto render(view& view_)
+auto render(view& view_, Calculator& calculator)
 {
-   static float const grid[] = { 0.32, 1.0 };
+   static float const grid[] = { 1.0, 1.0 };
 
    auto in = input_box("0");
    in.second->on_text =
       [input = in.second.get()](std::string_view text) {};
+   in.second->set_text("0");
 
    auto display =
       vtile(
@@ -26,34 +28,46 @@ auto render(view& view_)
    std::vector<layered_button> buttons;
    std::vector<std::string> icons = {
       "AC", "DEL", "(", ")",
-      "^", "s", "x", "/"
+      "^", "s", "x", "/",
       "7", "8", "9", "+",
       "4", "5", "6", "-",
       "1", "2", "3", ".",
       "0", "="
    };
    
-   auto AC = button("AC");
-   buttons.push_back(AC);
-   AC.on_click = [&view_, in, input = in.second.get()](bool) mutable {
+   buttons.push_back(button(icons[0], 2));
+   buttons[0].on_click = [&view_, in, input = in.second.get()](bool) mutable {
          input->set_text("0");
          view_.refresh(*in.second);
       };
    
-   auto DEL = button("DEL");
-   buttons.push_back(DEL);
-   DEL.on_click = [&view_, in, input = in.second.get()](bool) mutable {
+   buttons.push_back(button(icons[1], 2));
+   buttons[1].on_click = [&view_, in, input = in.second.get()](bool) mutable {
          std::string temp = input->get_text();
-         input->set_text(temp.substr(0, temp.size()-1));
+         if (temp.size() == 1)
+             input->set_text("0");
+         else
+            input->set_text(temp.substr(0, temp.size()-1));
          view_.refresh(*in.second);
       };
 
-   for (int i = 2; i < icons.size(); i++) {
-      buttons.push_back(button(icons[i]));
+   for (int i = 2; i < icons.size() - 1; i++) {
+      buttons.push_back(button(icons[i], 2));
       buttons[i].on_click = [&view_, in, i, icons, input = in.second.get()](bool) mutable {
-         input->set_text(icons[i]);
+         if (input->get_text() == "0")
+            input->set_text(icons[i]);
+         else
+             input->set_text(input->get_text() + icons[i]);
          view_.refresh(*in.second);
       };
+   };
+
+   buttons.push_back(button(icons[icons.size() - 1], 2));
+   buttons[icons.size() - 1].on_click = [&view_, &calculator, in, input = in.second.get()](bool) mutable {
+       calculator << input->get_text();
+       calculator.evaluate();
+       input->set_text(std::to_string(calculator.getAnswer()));
+       view_.refresh(*in.second);
    };
 
    auto button_grid =
@@ -63,11 +77,11 @@ auto render(view& view_)
          hgrid(buttons[8], buttons[9], buttons[10], buttons[11]),
          hgrid(buttons[12], buttons[13], buttons[14], buttons[15]),
          hgrid(buttons[16], buttons[17], buttons[18], buttons[19]),
-         hgrid(buttons[20], buttons[21]),
+         hgrid(buttons[20], buttons[21])
       );
 
    return
-      max_size({ 1280, 640 },
+      fixed_size({ 400, 400 },
          margin(
             { 10, 10, 10, 10 },
             vtile(
@@ -87,8 +101,10 @@ int main(int argc, char* argv[])
 
    view view_(_win);
 
+   Calculator calculator;
+
    view_.content(
-      render(view_),
+      render(view_, calculator),
       background
    );
 
