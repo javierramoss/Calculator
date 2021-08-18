@@ -6,6 +6,9 @@
 #include <stack>
 #include <queue>
 #include <unordered_map>
+#include "./lib/LinkedStack/linkedstack.hpp"
+#include "./lib/LinkedQueue/linkedqueue.hpp"
+
 using namespace std;
 
 class Calculator {
@@ -13,8 +16,8 @@ class Calculator {
     friend void operator<<(Calculator& calculator, const string& str);
 
 private:
-    queue<string> postfix;
-    stack<int> instructions;
+    LinkedQueue<string> postfix;
+    LinkedStack<int> instructions;
     unordered_map<char, int> precedence = { {'+', 1}, {'-', 1}, {'x', 2}, {'*', 2}, {'/', 2}, {'^', 3}, {'s', 3} };
 
 public:

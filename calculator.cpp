@@ -56,7 +56,7 @@ void Calculator::getPostfixNotation(const string& infix) {
 
 void Calculator::evaluate() {
     while (!postfix.empty()) {
-        string str = postfix.front();
+        string str = postfix.top();
         if (!std::isdigit(str[0])) {
             int n1 = instructions.top();
             instructions.pop();
