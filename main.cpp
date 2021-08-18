@@ -45,7 +45,7 @@ auto render(view& view_, Calculator& calculator)
    buttons[1].on_click = [&view_, in, input = in.second.get()](bool) mutable {
          std::string temp = input->get_text();
          if (temp.size() == 1)
-             input->set_text("0");
+            input->set_text("0");
          else
             input->set_text(temp.substr(0, temp.size()-1));
          view_.refresh(*in.second);
