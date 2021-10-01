@@ -1,0 +1,3 @@
+[submodule "lib/LinkedLib"]
+	path = lib/LinkedLib
+	url = https://github.com/BigBeakPenguin/LinkedLib.git
