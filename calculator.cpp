@@ -1,28 +1,28 @@
 #include "calculator.hpp"
 
-ostream& operator<<(ostream& out, const Calculator& calculator) {
+std::ostream& operator<<(std::ostream& out, const Calculator& calculator) {
     out << calculator.getAnswer();
     return out;
 }
 
-void operator<<(Calculator& calculator, const string& infix) {
+void operator<<(Calculator& calculator, const std::string& infix) {
     calculator.getPostfixNotation(infix);
 }
 
-string Calculator::toString(const char& ch) {
-    string temp = "";
+std::string Calculator::toString(const char& ch) {
+    std::string temp = "";
     temp += ch;
     return temp;
 }
 
-void Calculator::getPostfixNotation(const string& infix) {
+void Calculator::getPostfixNotation(const std::string& infix) {
     int i = 0;
-    stack<char> infixOperators;
+    LinkedStack<char> infixOperators;
     while (i < infix.size()) {
         char ch = infix[i];
 
         if (std::isdigit(ch)) {
-            string temp = toString(ch);
+            std::string temp = toString(ch);
             while (i + 1 < infix.size() && isdigit(infix[i + 1]))
                 temp += infix[++i];
 
@@ -56,7 +56,7 @@ void Calculator::getPostfixNotation(const string& infix) {
 
 void Calculator::evaluate() {
     while (!postfix.empty()) {
-        string str = postfix.top();
+        std::string str = postfix.top();
         if (!std::isdigit(str[0])) {
             int n1 = instructions.top();
             instructions.pop();
@@ -77,7 +77,7 @@ void Calculator::evaluate() {
                 instructions.push(pow(n1, 1.0 / n2));
         }
         else {
-            instructions.push(stoi(str));
+            instructions.push(std::stoi(str));
         }
 
         postfix.pop();
