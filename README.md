@@ -1,5 +1,7 @@
 # Calculator
-A simple calculator entirely on C++ and CMake capable of performing the most fundamental arithmetic operations. The GUI is implemented by using the Elements C++ GUI library, and then
+A simple calculator entirely on C++ and CMake capable of performing the most fundamental arithmetic operations using the Elements C++ GUI library
+
+![calc](https://user-images.githubusercontent.com/65036152/166814225-6b80fc90-1b7f-444e-a58b-2f6f8082729f.JPG)
 
 ## Features
 * Addition, subtraction, multiplication, division, power, and nth root
@@ -23,9 +25,15 @@ git clone https://github.com/BigBeakPenguin/Calculator.git
 ```
 cmake -G"Visual Studio 16 2019" -DELEMENTS_ROOT=”../elements” ../
 ```
-5. Open the `Calculator.sln` in Visual Studio.
-6. Remove all the solutions in Visual Studio excepts for `elements` and `calculator`.
-7. Build all.
+5. cd to the lib folder and use the following commands to import the LinkedLib library to the project:
+```
+git submodule init
+git submodule update
+```
+6. Go back to the main folder and open the `Calculator.sln` in Visual Studio.
+7. Add the calculator.cpp file to the solution under source files if not present.
+8. Remove all the solutions in Visual Studio excepts for `elements` and `calculator`.
+9. Build all.
 
 ## Usage
 Press the buttons or type directly into the display to write an arithmetic operation. To compute the answer simply press the `=` button.
