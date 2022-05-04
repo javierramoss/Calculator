@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include <vector>
 #include <elements.hpp>
@@ -28,7 +28,7 @@ auto render(view& view_, Calculator& calculator)
    std::vector<layered_button> buttons;
    std::vector<std::string> icons = {
       "AC", "DEL", "(", ")",
-      "^", "s", "x", "/",
+      "^", "r", "x", "/",
       "7", "8", "9", "+",
       "4", "5", "6", "-",
       "1", "2", "3", ".",
@@ -36,28 +36,35 @@ auto render(view& view_, Calculator& calculator)
    };
    
    buttons.push_back(button(icons[0], 2));
-   buttons[0].on_click = [&view_, in, input = in.second.get()](bool) mutable {
+   buttons[0].on_click = [&view_, &calculator, in, input = in.second.get()](bool) mutable {
          input->set_text("0");
+         calculator.AC();
+         calculator << input->get_text();
+         calculator.evaluate();
          view_.refresh(*in.second);
       };
    
    buttons.push_back(button(icons[1], 2));
    buttons[1].on_click = [&view_, in, input = in.second.get()](bool) mutable {
          std::string temp = input->get_text();
-         if (temp.size() == 1)
-            input->set_text("0");
-         else
-            input->set_text(temp.substr(0, temp.size()-1));
+         if (temp.size() == 1) {
+             input->set_text("0");
+         }
+         else {
+             input->set_text(temp.substr(0, temp.size() - 1));
+         }
          view_.refresh(*in.second);
       };
 
    for (int i = 2; i < icons.size() - 1; i++) {
       buttons.push_back(button(icons[i], 2));
       buttons[i].on_click = [&view_, in, i, icons, input = in.second.get()](bool) mutable {
-         if (input->get_text() == "0")
-            input->set_text(icons[i]);
-         else
-             input->set_text(input->get_text() + icons[i]);
+          if (input->get_text() == "0") {
+              input->set_text(icons[i]);
+          }
+          else {
+              input->set_text(input->get_text() + icons[i]);
+          }
          view_.refresh(*in.second);
       };
    };
@@ -66,7 +73,7 @@ auto render(view& view_, Calculator& calculator)
    buttons[icons.size() - 1].on_click = [&view_, &calculator, in, input = in.second.get()](bool) mutable {
        calculator << input->get_text();
        calculator.evaluate();
-       input->set_text(std::to_string(calculator.getAnswer()));
+       input->set_text(calculator.getAnswer());
        view_.refresh(*in.second);
    };
 
