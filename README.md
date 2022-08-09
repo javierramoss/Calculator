@@ -17,7 +17,7 @@ A simple calculator entirely on C++ and CMake capable of performing the most fun
 ## Build
 1. Clone the repo:
 ```
-git clone https://github.com/BigBeakPenguin/Calculator.git
+git clone https://github.com/javierramoss/Calculator.git
 ```
 2. cd to the Calculator folder and create a `build` folder.
 3. cd to the `build` folder and open the command prompt.
